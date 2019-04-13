@@ -1,0 +1,1 @@
+# gosasyu.vim
