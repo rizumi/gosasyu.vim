@@ -4,24 +4,43 @@ function! gosasyu#gosasyu(name)
   "出力
   " let a = s:createLine(0,0). s:createSeparetor()
   " echo a
-  let a = s:createLine(0, 0)
+  let a = s:createLine(1, 2, 7)
   echo a
 
 endfunction
 
-function! s:createLine(startDay, startWeek)
+function! s:createLine(originDay, start, end)
   "FIXME: Check args
   
   let result = "| "
-  if a:startWeek == 0
+  if a:start == 0
     let i = 0
+    while i < a:end
+      let result = result.(a:originDay+i)." | "
+      let i += 1
+    endwhile
+    
     while i < 7
-      let result = result.(a:startDay+i)." | "
+      let result = result." | "
       let i += 1
     endwhile
   else
     let i = 0
-    while i < startWeek
+    while i < a:start
+      let result = result." | "
+      let i += 1
+    endwhile
+
+    let j = 0
+    while i < a:end
+      let result = result.(a:originDay+j)." | "
+      let i += 1
+      let j += 1
+    endwhile
+    
+    while i < 7
+      let result = result." | "
+      let i += 1
     endwhile
   endif
 
