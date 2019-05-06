@@ -1,31 +1,36 @@
-function! gosasyu#gosasyu(name)
+function! gosasyu#gosasyu(arg)
   "FIXME: Check arg yyyy/mm
-  let input = split(a:name,'/')
+  let input = split(a:arg,'/')
   let year = input[0]
   let month = input[1]
   
-  "出力
   let startDay = s:checkStartDay(year, month)
   let isLeapYear = s:checkLeapYear(year)
   let days = s:countDays(month, isLeapYear)
 
+  let list = []
 
-  let a = s:createLine(1, startDay, 7)
-  let a = a.s:createSeparetor()
+  call add(list, s:createLine(1, startDay, 7))
+  call add(list, s:createSeparetor())
   
   let current = 7 - startDay + 1
 
   while current <= days
     if current + 7 <= days
-      let a = a.s:createLine(current, 0, 7)
+      call add(list,s:createLine(current, 0, 7))
       let current += 7
     else 
-      let a = a.s:createLine(current, 0, days - current + 1)
+      call add(list,s:createLine(current, 0, days - current + 1))
       let current += 7
     endif
   endwhile
-
-  echo a
+  
+  new [gosasyu output]
+  setlocal buftype=nowrite
+  setlocal noswapfile
+  setlocal bufhidden=wipe
+  setlocal nowrap
+  call append('.',list)
 
 endfunction
 
@@ -82,13 +87,11 @@ function! s:createLine(originDay, start, end)
     endwhile
   endif
 
-  let result = result."\n"
-
   return result
 endfunction
 
 function! s:createSeparetor()
-  return "| :---: | :---: | :---: | :---: | :---: | :---: | :---: |\n"
+  return "| :---: | :---: | :---: | :---: | :---: | :---: | :---: |"
 endfunction
 
 function! s:countDays(month, isLeapYear)
@@ -100,6 +103,3 @@ function! s:countDays(month, isLeapYear)
 
   return s:days[a:month - 1]
 endfunction
-
-"Debug
-"call gosasyu#gosasyu('2019/03')
