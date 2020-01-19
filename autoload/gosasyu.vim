@@ -39,6 +39,7 @@ function! s:checkStartDay(year, month)
   let month = a:month
  
   if month < 3
+    let year = year - 1
     let month = month + 12
   endif
 
